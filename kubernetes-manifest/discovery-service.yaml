@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: discovery-service
+  labels:
+    app: discovery-service
+spec:
+  replicas: 1
+  selector:
+    matachLabels:
+      app: discovery-service
+  template:
+    metadata:
+      labels:
+        app: discovery-service
+    spec:
+      containers:
+      - name: discovery-service
+      image: springcommunity/spring-petclinic-discovery-service
+      resources:
+        limits:
+          memory: 512M
+      ports:
+      - containerPort: 8761
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: discovery-service-service
+spec:
+  selector:
+    app: discovery-service
+  ports:
+    - protocol: TCP
+      port: 8761
+      targetPort: 8761
+  type: NodePort

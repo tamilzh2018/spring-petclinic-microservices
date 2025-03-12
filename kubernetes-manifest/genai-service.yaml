@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: genai-service
+  labels:
+    app: genai-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: genai-service
+  template:
+    metadata:
+      labels:
+        app: genai-service
+    spec:
+      containers:
+      - name: genai-service
+        image: springcommunity/spring-petclinic-genai-service
+        resources:
+          limits:
+            memory: 512M
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: genai-service-service
+spec:
+  selector:
+    app: genai-service
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+  type: NodePort
