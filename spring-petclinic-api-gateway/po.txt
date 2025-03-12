@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.springframework.samples.petclinic.api</groupId>
     <artifactId>spring-petclinic-api-gateway</artifactId>
-    <version>3.4.1</version> <!-- Define the version directly -->
     <packaging>jar</packaging>
     <description>Spring PetClinic API Gateway</description>
 
-
+    <parent>
+        <groupId>org.springframework.samples</groupId>
+        <artifactId>spring-petclinic-microservices</artifactId>
+        <version>3.4.1</version>
+    </parent>
 
     <properties>
         <webjars-bootstrap.version>5.3.3</webjars-bootstrap.version>
@@ -19,12 +21,10 @@
         <webjars-angular-ui-router.version>1.0.30</webjars-angular-ui-router.version>
         <webjars-marked.version>14.1.2</webjars-marked.version>
         <squareup-okhttp3.version>4.12.0</squareup-okhttp3.version>
-        <!-- Define Spring Boot version, if needed, or rely on dependency management -->
-        <spring.boot.version>3.2.3</spring.boot.version>
-        <spring-cloud.version>2023.0.0</spring-cloud.version>
 
         <libsass-maven-plugin.version>0.2.29</libsass-maven-plugin.version>
-
+        <docker.image.exposed.port>8081</docker.image.exposed.port>
+        <docker.image.dockerfile.dir>${basedir}/../docker</docker.image.dockerfile.dir>
     </properties>
 
     <dependencies>
@@ -156,7 +156,17 @@
     </dependencies>
 
     <profiles>
-
+        <profile>
+            <id>buildDocker</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
         <profile>
             <id>css</id>
             <build>

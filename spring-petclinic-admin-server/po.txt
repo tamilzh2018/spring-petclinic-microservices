@@ -6,35 +6,20 @@
 
     <groupId>org.springframework.samples.petclinic.admin</groupId>
     <artifactId>spring-petclinic-admin-server</artifactId>
-    <version>3.4.1</version> <!-- Define the version directly -->
     <packaging>jar</packaging>
     <description>Spring Boot Admin server</description>
 
+    <parent>
+        <groupId>org.springframework.samples</groupId>
+        <artifactId>spring-petclinic-microservices</artifactId>
+        <version>3.4.1</version>
+    </parent>
+
     <properties>
         <spring-boot-admin.version>3.4.1</spring-boot-admin.version>
-        <!-- Define Spring Boot version, if needed, or rely on dependency management -->
-        <spring.boot.version>3.2.3</spring.boot.version>
-        <spring-cloud.version>2023.0.0</spring-cloud.version>
+        <docker.image.exposed.port>9090</docker.image.exposed.port>
+        <docker.image.dockerfile.dir>${basedir}/../docker</docker.image.dockerfile.dir>
     </properties>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring.boot.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <dependencies>
         <!-- Spring Boot -->
@@ -71,7 +56,6 @@
         <dependency>
             <groupId>org.jolokia</groupId>
             <artifactId>jolokia-core</artifactId>
-            <version>1.7.1</version>
         </dependency>
         <dependency>
             <groupId>com.github.ben-manes.caffeine</groupId>
@@ -79,5 +63,19 @@
         </dependency>
 
     </dependencies>
-    
+
+    <profiles>
+        <profile>
+            <id>buildDocker</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
 </project>
