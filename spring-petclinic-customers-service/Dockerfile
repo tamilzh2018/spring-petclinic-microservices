@@ -6,8 +6,6 @@ RUN mvn clean package -Dmaven.test.skip=true
 
 FROM eclipse-temurin:21-alpine
 WORKDIR /app
-COPY --from=builder /app/target/config-server.jar /app/config-server.jar
-EXPOSE 8888
-CMD ["java", "-jar", "/app/config-server.jar" ] 
-
-
+COPY --from=builder /app/target/*.jar /app/spring-petclinic-customers-service.jar
+EXPOSE 8082
+CMD ["java", "-jar", "/app/spring-petclinic-customers-service.jar"]
